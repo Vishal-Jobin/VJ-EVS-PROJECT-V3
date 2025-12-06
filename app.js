@@ -298,14 +298,19 @@ async function loadCarpools() {
 }
 
 // Call once on page load
-loadCarpools();
+try {
+    loadCarpools();
+} catch (e) {
+    console.error("Carpool load failed:", e);
+}
+
+// Expose functions globally
+window.showScreen = showScreen;
+window.signup = signup;
+window.login = login;
+window.logout = logout;
+window.findGreenRoute = findGreenRoute;
+window.planErrands = planErrands;
+window.createCarpool = createCarpool;
 
 
-    // ------------------- Expose functions globally -------------------
-    window.showScreen = showScreen;
-    window.signup = signup;
-    window.login = login;
-    window.logout = logout;
-    window.findGreenRoute = findGreenRoute;
-    window.planErrands = planErrands;
-    window.createCarpool = createCarpool;
