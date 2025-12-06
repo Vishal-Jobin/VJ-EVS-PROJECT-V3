@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Green Route</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css"/>
+  <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
+  <style>
+    /* Global */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #e6f2ff;
+      color: #333;
+    }
+
+    h2 {
+      color: #006633;
+      text-align: center;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      background: #004d00;
+      padding: 10px 0;
+    }
+
+    nav button {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background: #00cc44;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    nav button:hover {
+      background: #009933;
+    }
+
+    .screen {
+      display: none;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    #login-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #login-screen input {
+      margin: 10px 0;
+      padding: 10px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    #login-screen button {
+      margin: 5px;
+      padding: 10px 20px;
+      background: #006633;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    #login-screen button:hover {
+      background: #004d00;
+    }
+
+    input, textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button.action-btn {
+      background: #006633;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    button.action-btn:hover {
+      background: #004d00;
+    }
+
+    #greenRouteMap, #errandsMap {
+      height: 400px;
+      margin-top: 15px;
+      border-radius: 10px;
+      border: 2px solid #00cc44;
+    }
+
+    /* Responsive */
+    @media(max-width: 600px) {
+      nav {
+        flex-direction: column;
+      }
+      input, textarea {
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="login-screen">
+    <h2>Green Route</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <div>
+      <button onclick="signup()">Sign Up</button>
+      <button onclick="login()">Login</button>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="app" style="display:none;">
+    <nav>
+      <button onclick="showScreen('home')">Home</button>
+      <button onclick="showScreen('greenRoute')">Green Route</button>
+      <button onclick="showScreen('errands')">Errands</button>
+      <button onclick="showScreen('carpool')">Carpool</button>
+      <button onclick="showScreen('profile')">Profile</button>
+      <button onclick="logout()">Logout</button>
+    </nav>
+
+    <div id="home-screen" class="screen" style="display:block;">
+      <h2>Welcome to Green Route 🌱</h2>
+      <p style="text-align:center;">Plan eco-friendly trips, optimize errands, and track CO₂ saved!</p>
+    </div>
+
+    <!-- Green Route -->
+    <div id="greenRoute-screen" class="screen">
+      <h2>Find Greenest Route</h2>
+      <input type="text" id="start" placeholder="Start Location">
+      <input type="text" id="end" placeholder="Destination">
+      <button class="action-btn" onclick="findGreenRoute()">Find Route</button>
+      <div id="greenRouteResult"></div>
+      <div id="greenRouteMap"></div>
+    </div>
+
+    <!-- Errands -->
+    <div id="errands-screen" class="screen">
+      <h2>Plan Errands (Multi-stop)</h2>
+      <textarea id="errandStops" placeholder="Enter stops separated by commas"></textarea>
+      <button class="action-btn" onclick="planErrands()">Optimize Route</button>
+      <div id="errandsResult"></div>
+      <div id="errandsMap"></div>
+    </div>
+
+    <!-- Carpool -->
+    <div id="carpool-screen" class="screen">
+      <h2>Carpool</h2>
+      <input type="text" id="carpoolOrigin" placeholder="Origin">
+      <input type="text" id="carpoolDestination" placeholder="Destination">
+      <input type="text" id="carpoolTime" placeholder="Time">
+      <input type="number" id="carpoolSeats" placeholder="Seats Available">
+      <button class="action-btn" onclick="createCarpool()">Create Ride</button>
+      <div id="carpoolList"></div>
+    </div>
+
+    <!-- Profile -->
+    <div id="profile-screen" class="screen">
+      <h2>Profile</h2>
+      <p id="profileInfo"></p>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

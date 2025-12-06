@@ -1,0 +1,101 @@
+/* ---------------- Body ---------------- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom right, #a8e6cf, #dcedc1);
+    color: #333;
+}
+
+/* ---------------- General Container ---------------- */
+#login-screen, #app {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* ---------------- Inputs & Textarea ---------------- */
+input, textarea {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 15px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 10px rgba(76,175,80,0.4);
+    outline: none;
+}
+
+/* ---------------- Buttons ---------------- */
+button {
+    background: linear-gradient(45deg, #4caf50, #81c784);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* ---------------- Navigation ---------------- */
+nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+nav button {
+    margin: 5px;
+    background: linear-gradient(45deg, #2196f3, #64b5f6);
+}
+
+/* ---------------- Screens ---------------- */
+.screen {
+    margin-top: 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+/* ---------------- Map Styling ---------------- */
+#greenRouteMap, #errandsMap {
+    height: 400px;
+    width: 100%;
+    border-radius: 15px;
+    margin-top: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* ---------------- Results ---------------- */
+#greenRouteResult, #errandsResult, #carpoolList, #profileInfo {
+    background: rgba(76, 175, 80, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* ---------------- Animations ---------------- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
